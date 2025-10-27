@@ -1,0 +1,21 @@
+{% extends "users/base.html" %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+<h1>Connexion</h1>
+<form method="post" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <small class="error">{{ field.errors|striptags }}</small>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <button class="btn" type="submit">Se connecter</button>
+</form>
+<p>Pas encore de compte ? <a href="{% url 'users:register' %}">Inscrivez-vous</a>.</p>
+{% endblock %}

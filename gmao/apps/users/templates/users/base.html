@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}GMAO{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f5f5f5;
+            color: #333;
+        }
+        header {
+            background: #1f2937;
+            color: #fff;
+            padding: 1rem 2rem;
+        }
+        nav a {
+            color: #fff;
+            margin-right: 1rem;
+            text-decoration: none;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        main {
+            max-width: 720px;
+            margin: 2rem auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 12px rgba(31, 41, 55, 0.12);
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            border: none;
+            background: #2563eb;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn-secondary {
+            background: #4b5563;
+        }
+        .messages {
+            margin-bottom: 1rem;
+            padding: 0;
+            list-style: none;
+        }
+        .messages li {
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            background: #e0f2fe;
+        }
+        .messages li.error {
+            background: #fee2e2;
+        }
+        .messages li.success {
+            background: #dcfce7;
+        }
+        form .form-group {
+            margin-bottom: 1rem;
+        }
+        form label {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-weight: bold;
+        }
+        form input {
+            width: 100%;
+            padding: 0.65rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{% url 'users:home' %}">Accueil</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'users:admin-dashboard' %}">Tableau de bord</a>
+                <a href="{% url 'users:logout' %}">Deconnexion</a>
+            {% else %}
+                <a href="{% url 'users:login' %}">Connexion</a>
+                <a href="{% url 'users:register' %}">Creer un compte</a>
+            {% endif %}
+        </nav>
+    </header>
+    <main>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

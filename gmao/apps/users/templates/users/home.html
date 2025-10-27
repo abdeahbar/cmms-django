@@ -1,0 +1,23 @@
+{% extends "users/base.html" %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+<h1>Bienvenue sur la GMAO</h1>
+<p>
+    Cette application vous aide a piloter vos equipements, planifier la maintenance et suivre les interventions.
+    Prenez quelques instants pour explorer le tableau de bord et les modules disponibles.
+    Pour commencer rapidement, importez vos sites, ajoutez les equipements critiques puis planifiez les ordres de travail.
+</p>
+{% if not user.is_authenticated %}
+    <p>
+        <a class="btn" href="{% url 'users:register' %}">Creer un compte</a>
+        <a class="btn btn-secondary" href="{% url 'users:login' %}">Se connecter</a>
+    </p>
+{% else %}
+    <p>
+        Vous etes connecte en tant que <strong>{{ user.get_full_name|default:user.username }}</strong>.
+        Consultez votre <a href="{% url 'users:admin-dashboard' %}">tableau de bord</a> pour acceder aux indicateurs clefs.
+    </p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "users/base.html" %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block content %}
+<h1>Tableau de bord administrateur</h1>
+<p>Bienvenue {{ user.get_full_name|default:user.username }}.</p>
+
+<section>
+    <h2>Statistiques</h2>
+    <ul>
+        <li>Utilisateurs totaux : <strong>{{ users_count }}</strong></li>
+        <li>Personnel : <strong>{{ staff_count }}</strong></li>
+    </ul>
+</section>
+
+<section>
+    <h2>Groupes</h2>
+    {% if groups %}
+        <ul>
+            {% for group in groups %}
+                <li>{{ group.name }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun groupe pour le moment.</p>
+    {% endif %}
+</section>
+{% endblock %}
