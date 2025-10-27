@@ -4,9 +4,10 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group
 from django.contrib.auth.views import LoginView
+from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView, TemplateView, View
 
 from .forms import LoginForm, RegisterForm
 
@@ -66,3 +67,13 @@ class AdminDashboardView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
             }
         )
         return context
+
+
+class UserLogoutView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        messages.info(request, "Vous avez ete deconnecte.")
+        return redirect("users:home")
+
+    def post(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)

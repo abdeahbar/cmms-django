@@ -1,0 +1,28 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Django files
+db.sqlite3
+media/
+staticfiles/
+
+# IDE / tooling
+.vscode/
+.idea/
+*.log
+
+# Unit test / coverage reports
+.coverage
+coverage.xml
+htmlcov/
+
+# System
+Thumbs.db
+.DS_Store

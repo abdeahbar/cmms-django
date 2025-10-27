@@ -57,3 +57,12 @@ class UserViewsTests(TestCase):
         response = self.client.get(reverse("users:admin-dashboard"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Tableau de bord administrateur")
+
+    def test_logout_redirects_home(self):
+        user = User.objects.create_user(username="logout_user", password="LogoutPass123")
+        self.client.login(username="logout_user", password="LogoutPass123")
+
+        response = self.client.get(reverse("users:logout"), follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context["user"].is_authenticated)
+        self.assertContains(response, "Vous avez ete deconnecte.")
