@@ -91,6 +91,9 @@ class Equipement(models.Model):
     cree_le = models.DateTimeField("Cree le", auto_now_add=True)
     modifie_le = models.DateTimeField("Modifie le", auto_now=True)
     supprime_le = models.DateTimeField("Supprime le", null=True, blank=True)
+    teams_in_charge = models.CharField("Teams in charge", max_length=255, blank=True)
+    vendors = models.CharField("Vendors", max_length=255, blank=True)
+    parts = models.CharField("Parts", max_length=255, blank=True)
 
     class Meta:
         ordering = ("nom",)

@@ -20,10 +20,12 @@ class EquipementAdmin(admin.ModelAdmin):
         "localisation",
         "fabricant",
         "modele",
+        "teams_in_charge",
+        "vendors",
         "cree_le",
     )
     list_filter = ("status", "criticalite", "asset_type", "localisation", "fabricant")
-    search_fields = ("nom", "designation", "code_gmao", "numero_serie")
+    search_fields = ("nom", "designation", "code_gmao", "numero_serie", "teams_in_charge", "vendors", "parts")
     autocomplete_fields = ("asset_type", "localisation", "fabricant", "modele", "parent")
     readonly_fields = ("cree_le", "modifie_le")
 

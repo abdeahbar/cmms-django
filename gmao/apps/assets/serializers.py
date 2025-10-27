@@ -18,6 +18,7 @@ class EquipementSerializer(serializers.ModelSerializer):
             "modele", "modele_nom",
             "numero_serie", "annee",
             "description",
+            "teams_in_charge", "vendors", "parts",
             "parent",
             "cree_par", "cree_le", "modifie_le",
         ]

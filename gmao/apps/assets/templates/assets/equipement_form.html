@@ -1,0 +1,242 @@
+{% extends "users/base.html" %}
+
+{% block title %}New Asset{% endblock %}
+
+{% block content %}
+<style>
+    .card {
+        margin-bottom: 1.5rem;
+        padding: 1.5rem;
+        border-radius: 8px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+    }
+    .card h2 {
+        margin-top: 0;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #1f2937;
+    }
+    .field {
+        margin-bottom: 1rem;
+    }
+    .field label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 0.35rem;
+    }
+    .field small {
+        display: block;
+        margin-top: 0.3rem;
+        color: #6b7280;
+    }
+    .field .error {
+        color: #dc2626;
+    }
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    .attachment-item {
+        margin-bottom: 1rem;
+        padding: 1rem;
+        border-radius: 6px;
+        background: #fff;
+        border: 1px dashed #cbd5f5;
+    }
+    .attachment-item h3 {
+        margin-top: 0;
+        font-size: 1rem;
+        color: #2563eb;
+    }
+    .badge {
+        display: inline-block;
+        background: #dbeafe;
+        color: #1d4ed8;
+        padding: 0.2rem 0.5rem;
+        border-radius: 9999px;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+</style>
+
+<h1>New Asset</h1>
+<p>Complete the sections below to register a new asset in the system. Required information is marked accordingly.</p>
+
+{% if form.non_field_errors %}
+    <div class="card">
+        <ul class="messages">
+            {% for error in form.non_field_errors %}
+                <li class="error">{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+
+    <div class="card">
+        <h2>Name (Required)</h2>
+        <div class="field">
+            <label for="{{ form.nom.id_for_label }}">{{ form.nom.label }}</label>
+            {{ form.nom }}
+            {% if form.nom.errors %}<small class="error">{{ form.nom.errors|striptags }}</small>{% endif %}
+        </div>
+        <div class="field">
+            <label for="{{ form.code_gmao.id_for_label }}">{{ form.code_gmao.label }}</label>
+            {{ form.code_gmao }}
+            <small>Scannez ou indiquez le QR code / code barre associe.</small>
+            {% if form.code_gmao.errors %}<small class="error">{{ form.code_gmao.errors|striptags }}</small>{% endif %}
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Pictures</h2>
+        <p class="badge">Optional</p>
+        {{ image_formset.management_form }}
+        {% for image_form in image_formset %}
+            <div class="attachment-item">
+                <h3>Picture {{ forloop.counter }}</h3>
+                <div class="field">
+                    {{ image_form.image.label_tag }}
+                    {{ image_form.image }}
+                    {% if image_form.image.errors %}<small class="error">{{ image_form.image.errors|striptags }}</small>{% endif %}
+                </div>
+                <div class="field">
+                    {{ image_form.titre.label_tag }}
+                    {{ image_form.titre }}
+                    {% if image_form.titre.errors %}<small class="error">{{ image_form.titre.errors|striptags }}</small>{% endif %}
+                </div>
+                {% if image_form.can_delete %}
+                    <div class="field">
+                        {{ image_form.DELETE }} <label for="{{ image_form.DELETE.id_for_label }}">Supprimer</label>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <small>Ajoutez jusqu'a trois images par enregistrement. Enregistrez pour en ajouter davantage.</small>
+    </div>
+
+    <div class="card">
+        <h2>Files</h2>
+        <p class="badge">Optional</p>
+        {{ file_formset.management_form }}
+        {% for file_form in file_formset %}
+            <div class="attachment-item">
+                <h3>File {{ forloop.counter }}</h3>
+                <div class="field">
+                    {{ file_form.fichier.label_tag }}
+                    {{ file_form.fichier }}
+                    {% if file_form.fichier.errors %}<small class="error">{{ file_form.fichier.errors|striptags }}</small>{% endif %}
+                </div>
+                <div class="field">
+                    {{ file_form.description.label_tag }}
+                    {{ file_form.description }}
+                    {% if file_form.description.errors %}<small class="error">{{ file_form.description.errors|striptags }}</small>{% endif %}
+                </div>
+                {% if file_form.can_delete %}
+                    <div class="field">
+                        {{ file_form.DELETE }} <label for="{{ file_form.DELETE.id_for_label }}">Supprimer</label>
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="card">
+        <h2>Location & General</h2>
+        <div class="field">
+            <label for="{{ form.localisation.id_for_label }}">{{ form.localisation.label }}</label>
+            {{ form.localisation }}
+            {% if form.localisation.errors %}<small class="error">{{ form.localisation.errors|striptags }}</small>{% endif %}
+        </div>
+        <div class="field">
+            <label for="{{ form.designation.id_for_label }}">{{ form.designation.label }}</label>
+            {{ form.designation }}
+            {% if form.designation.errors %}<small class="error">{{ form.designation.errors|striptags }}</small>{% endif %}
+        </div>
+        <div class="field">
+            <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+            {{ form.description }}
+            {% if form.description.errors %}<small class="error">{{ form.description.errors|striptags }}</small>{% endif %}
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Classification</h2>
+        <div class="field">
+            <label for="{{ form.criticalite.id_for_label }}">{{ form.criticalite.label }}</label>
+            {{ form.criticalite }}
+            {% if form.criticalite.errors %}<small class="error">{{ form.criticalite.errors|striptags }}</small>{% endif %}
+        </div>
+        <div class="field">
+            <label for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
+            {{ form.status }}
+            {% if form.status.errors %}<small class="error">{{ form.status.errors|striptags }}</small>{% endif %}
+        </div>
+        <div class="field">
+            <label for="{{ form.asset_type.id_for_label }}">{{ form.asset_type.label }}</label>
+            {{ form.asset_type }}
+            {% if form.asset_type.errors %}<small class="error">{{ form.asset_type.errors|striptags }}</small>{% endif %}
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Technical Information</h2>
+        <div class="field">
+            <label for="{{ form.fabricant.id_for_label }}">{{ form.fabricant.label }}</label>
+            {{ form.fabricant }}
+            {% if form.fabricant.errors %}<small class="error">{{ form.fabricant.errors|striptags }}</small>{% endif %}
+        </div>
+        <div class="field">
+            <label for="{{ form.modele.id_for_label }}">{{ form.modele.label }}</label>
+            {{ form.modele }}
+            <small>Selectionnez d'abord le fabricant pour filtrer la liste.</small>
+            {% if form.modele.errors %}<small class="error">{{ form.modele.errors|striptags }}</small>{% endif %}
+        </div>
+        <div class="field">
+            <label for="{{ form.numero_serie.id_for_label }}">{{ form.numero_serie.label }}</label>
+            {{ form.numero_serie }}
+            {% if form.numero_serie.errors %}<small class="error">{{ form.numero_serie.errors|striptags }}</small>{% endif %}
+        </div>
+        <div class="field">
+            <label for="{{ form.annee.id_for_label }}">{{ form.annee.label }}</label>
+            {{ form.annee }}
+            {% if form.annee.errors %}<small class="error">{{ form.annee.errors|striptags }}</small>{% endif %}
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Operations</h2>
+        <div class="field">
+            <label for="{{ form.teams_in_charge.id_for_label }}">{{ form.teams_in_charge.label }}</label>
+            {{ form.teams_in_charge }}
+            {% if form.teams_in_charge.errors %}<small class="error">{{ form.teams_in_charge.errors|striptags }}</small>{% endif %}
+        </div>
+        <div class="field">
+            <label for="{{ form.vendors.id_for_label }}">{{ form.vendors.label }}</label>
+            {{ form.vendors }}
+            {% if form.vendors.errors %}<small class="error">{{ form.vendors.errors|striptags }}</small>{% endif %}
+        </div>
+        <div class="field">
+            <label for="{{ form.parts.id_for_label }}">{{ form.parts.label }}</label>
+            {{ form.parts }}
+            {% if form.parts.errors %}<small class="error">{{ form.parts.errors|striptags }}</small>{% endif %}
+        </div>
+        <div class="field">
+            <label for="{{ form.parent.id_for_label }}">{{ form.parent.label }}</label>
+            {{ form.parent }}
+            {% if form.parent.errors %}<small class="error">{{ form.parent.errors|striptags }}</small>{% endif %}
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button class="btn" type="submit">Save Asset</button>
+        <a class="btn btn-secondary" href="{% url 'users:admin-dashboard' %}">Cancel</a>
+    </div>
+</form>
+{% endblock %}
